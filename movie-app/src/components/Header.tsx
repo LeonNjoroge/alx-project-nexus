@@ -1,3 +1,5 @@
+import {useRouter} from "next/router";
+
 export default function Header() {
     const navLinks = [
         { name: "Home", href: "/" },
@@ -6,7 +8,11 @@ export default function Header() {
         { name: "Profile", href: "/profile" },
     ];
 
- return(
+    const router = useRouter();
+
+
+
+    return(
      <header>
         Header component
      </header>
