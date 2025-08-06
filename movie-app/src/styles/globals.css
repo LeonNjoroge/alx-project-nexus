@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
+/* === Movie Web Theme (scoped to your app) === */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --app-bg: #0f0d23;
+  --app-fg: #ffffff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --app-surface: #15172b;
+  --app-border: #2a2e45;
+
+  --app-primary: #f3d250;              /* accent yellow */
+  --app-primary-contrast: #151312;
+
+  --app-muted: #a8b5db;
+  --app-accent: #64748b;
+  --app-accent-contrast: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --app-bg: #0b0c18;
+    --app-fg: #f5f7ff;
+
+    --app-surface: #14162a;
+    --app-border: #2b2f49;
+
+    --app-primary: #ffd76a;
+    --app-primary-contrast: #0f0d23;
+
+    --app-muted: #b6c2ef;
+    --app-accent: #7b8aa6;
+    --app-accent-contrast: #ffffff;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Base */
+html, body, #__next {
+  height: 100%;
+  background: var(--app-bg);
+  color: var(--app-fg);
 }
