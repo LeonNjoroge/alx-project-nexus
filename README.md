@@ -67,20 +67,12 @@ The **ProDev Frontend Engineering** program focused on building production-ready
 
 ---
 
-## 🤝 Collaboration
-
-We worked closely with backend learners from the ProDev Backend track. Shared GraphQL schemas, aligned API expectations, and tested integrations early.
-
-📢 Join the conversation in **#ProDevProjectNexus** on Discord for support and synergy.
-
----
-
 ## 📚 Resources
 
 - [Next.js Documentation](https://nextjs.org/)
 - [TailwindCSS Docs](https://tailwindcss.com/)
 - [Apollo GraphQL](https://www.apollographql.com/)
-- [Expo for React Native](https://expo.dev/)
+
 
 ---
 
