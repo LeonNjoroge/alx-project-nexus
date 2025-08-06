@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
 export default function Home() {
   return (
    <div>
-     <Header />
      <p>
        Movie Recommendation App
      </p>
