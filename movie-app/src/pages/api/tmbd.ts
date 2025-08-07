@@ -6,10 +6,12 @@ export const TMDB_CONFIG = {
     },
 };
 
-export async function fetchMovies(query = "") {
+
+
+export async function fetchMovies(query = "", page = 2) {
     const endpoint = query
-        ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-        : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
+        ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&page=${page}`
+        : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc&include_adult=false&page=${page}`;
 
     const res = await fetch(endpoint, { headers: TMDB_CONFIG.HEADERS });
     if (!res.ok) throw new Error("Failed to fetch movies");
@@ -35,3 +37,13 @@ export async function fetchTopRatedMovies(page = 1) {
     return res.json();
 }
 
+export async function fetchFavouriteMovies(accountId: string) {
+    const endpoint = `${TMDB_CONFIG.BASE_URL}/account/${accountId}/favorite/movies?language=en-US&page=1`;
+
+    const res = await fetch(endpoint, {
+        headers: TMDB_CONFIG.HEADERS,
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch favourite movies');
+    return res.json();
+}
