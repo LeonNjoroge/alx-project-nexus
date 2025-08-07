@@ -1,23 +1,24 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-import Header from "@/components/Header";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import {useEffect, useState} from "react";
+import {Movie} from "@/interfaces/interface";
+import SearchBar from "@/components/SearchBar";
+import MovieCard from "@/components/MovieCard";
+import {fetchMovies} from "@/pages/api/tmbd";
 
 export default function Home() {
-  return (
-   <div>
-     <p>
-       Movie Recommendation App
-     </p>
-    </div>
+    const [movies, setMovies] = useState<Movie[]>([]);
+
+    useEffect(() => {
+        fetchMovies().then(data => setMovies(data.results));
+    }, []);
+
+
+    return (
+      <div>
+          <SearchBar />
+          <h2 className="text-lg font-bold mt-6 mb-3">Latest Movies</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+              {movies.map((m) => <MovieCard key={m.id} {...m} />)}
+          </div>
+      </div>
   );
 }
