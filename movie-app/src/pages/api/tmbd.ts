@@ -27,3 +27,11 @@ export async function fetchRecommendations(id: string) {
     if (!res.ok) throw new Error("Failed to fetch recommendations");
     return res.json();
 }
+
+export async function fetchTopRatedMovies(page = 1) {
+    const endpoint = `${TMDB_CONFIG.BASE_URL}/movie/top_rated?language=en-US&page=${page}`;
+    const res = await fetch(endpoint, { headers: TMDB_CONFIG.HEADERS });
+    if (!res.ok) throw new Error("Failed to fetch top rated movies");
+    return res.json();
+}
+

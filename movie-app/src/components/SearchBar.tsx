@@ -9,8 +9,7 @@ export default function SearchBar({ placeholder = "Search for a Movie" }) {
 
     const handleSearch = () => {
         if (q.trim()) {
-           // router.push(`/search?q=${encodeURIComponent(q.trim())}`);
-            router.push(`/`);
+            router.push(`/search?q=${encodeURIComponent(q.trim())}`);
         }
     };
 
