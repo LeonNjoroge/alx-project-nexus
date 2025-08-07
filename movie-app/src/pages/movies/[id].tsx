@@ -99,15 +99,6 @@ export default function MovieDetailsPage() {
                     )}
                 </div>
 
-                {/* Recommendations */}
-                {/*<div className="mt-10">*/}
-                {/*    <h2 className="text-xl font-semibold text-[var(--app-fg)] mb-4">Recommended Movies</h2>*/}
-                {/*    <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">*/}
-                {/*        {recs.map((m) => (*/}
-                {/*            <MovieCard key={m.id} {...m} />*/}
-                {/*        ))}*/}
-                {/*    </div>*/}
-                {/*</div>*/}
                 <div className="mt-10">
                     <h2 className="text-xl font-semibold text-[var(--app-fg)] mb-4">Recommended Movies</h2>
 
