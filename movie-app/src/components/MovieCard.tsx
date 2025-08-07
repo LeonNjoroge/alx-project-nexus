@@ -30,14 +30,17 @@ export default function MovieCard({
 
             <h3 className="mt-2 text-sm font-semibold truncate">{title}</h3>
 
-            <div className="flex items-center gap-1 text-xs mt-1">
-                <span>⭐</span>
-                <span className="font-semibold">{Math.round((vote_average ?? 0) / 2)}</span>
+            <div className="flex items-center justify-between text-xs mt-2 pb-2">
+                <div className="flex items-center gap-1 text-[var(--app-fg)]">
+                    <span className="text-yellow-400">⭐</span>
+                    <span className="font-semibold">{Math.round((vote_average ?? 0) / 2)}</span>
+                </div>
+
+                <div className="text-[var(--app-muted)]">
+                    {release_date?.split("-")[0] ?? ""}
+                </div>
             </div>
 
-            <div className="text-xs text-[var(--app-muted)] mt-1">
-                {release_date?.split("-")[0] ?? ""}
-            </div>
         </Link>
     );
 }
