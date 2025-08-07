@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { fetchMovies } from "@/pages/api/tmbd";
+import { fetchMovies, fetchTopRatedMovies } from "@/pages/api/tmbd";
 import { Movie } from "@/interfaces/interface";
-import MovieCard from "../components/MovieCard";
+import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
 
 export default function Search() {
@@ -13,20 +13,47 @@ export default function Search() {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(false);
 
+    // useEffect(() => {
+    //     const loadMovies = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const data = q ? await fetchMovies(q) : await fetchPopularMovies();
+    //             setMovies(data.results);
+    //         } catch (err) {
+    //             console.error("Error fetching movies", err);
+    //             setMovies([]);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //
+    //     loadMovies();
+    // }, [q]);
+
     useEffect(() => {
-        if (q) {
+        const loadMovies = async () => {
             setLoading(true);
-            fetchMovies(q)
-                .then((data) => setMovies(data.results))
-                .finally(() => setLoading(false));
-        }
+            try {
+                const data = q ? await fetchMovies(q) : await fetchTopRatedMovies(); // 🔁 Updated here
+                setMovies(data.results);
+            } catch (err) {
+                console.error("Error fetching movies", err);
+                setMovies([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+         void loadMovies();
     }, [q]);
 
+
     return (
-        <div className="px-4 py-6">
+        <div>
             <SearchBar />
-            <h1 className="text-xl font-semibold mb-4 mt-4">
-                {q ? `Results for: ${q}` : "Popular Movies"}
+
+            <h1 className="text-lg font-semibold my-4">
+                {q ? `Results for: ${q}` : "Top Rated Movies"}
             </h1>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5">
