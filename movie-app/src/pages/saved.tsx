@@ -21,7 +21,7 @@ export default function Saved({ savedMovies }: { savedMovies: Movie[] }) {
                     {savedMovies.map((m) => <MovieCard key={m.id} {...m} />)}
                 </div>
             ) : (
-                <p className="text-[var(--app-muted)]">You haven’t saved any movies yet.</p>
+                <p className="text-[var(--app-muted)]">You havent saved any movies yet.</p>
             )}
         </div>
     );
