@@ -22,14 +22,6 @@ export default function SignUp() {
             setMessage(data.message || "Registration failed");
             return;
         }
-
-
-        const login = await signIn("credentials", {
-            redirect: true,
-            username,
-            password,
-            callbackUrl: "/profile",
-        });
     };
 
     return (

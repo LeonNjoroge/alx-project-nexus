@@ -2,6 +2,8 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import {supabaseAdmin} from "@/services/supabase/admin";
+import type { JWT } from "next-auth/jwt";
+
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -44,7 +46,9 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.id = (user as any).id;
+                if (user && "id" in user && typeof user.id !== "undefined") {
+                    token.id = String(user.id);
+                }
                 token.name = user.name;
                 token.email = user.email;
             }
@@ -52,7 +56,9 @@ export const authOptions: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (session.user) {
-                (session.user as any).id = token.id;
+                if (session.user && (token as JWT).id) {
+                    session.user.id = String((token as JWT).id);
+                }
                 session.user.name = token.name || session.user.name;
                 session.user.email = token.email || session.user.email;
             }
