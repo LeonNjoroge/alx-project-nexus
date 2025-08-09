@@ -57,10 +57,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // 2) Enrich from TMDB in parallel using your helper
         const results = await Promise.allSettled(ids.map((id) => fetchMovieDetails(String(id))));
 
-        const movies = results
-            .filter((r): r is PromiseFulfilledResult<any> => r.status === "fulfilled")
-            .map((r) => r.value)
-            .filter(Boolean);
+        type MovieDetail = Awaited<ReturnType<typeof fetchMovieDetails>>;
+
+        const movies: MovieDetail[] = results.reduce<MovieDetail[]>((acc, r) => {
+            if (r.status === "fulfilled" && r.value) {
+                acc.push(r.value as MovieDetail);
+            }
+            return acc;
+        }, []);
+
 
         return res.status(200).json(movies);
     }

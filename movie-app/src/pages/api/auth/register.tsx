@@ -27,8 +27,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (error) return res.status(500).json({ message: error.message });
 
         return res.status(201).json({ message: "User created successfully" });
-    } catch (e: any) {
-        console.error("Registration error:", e);
-        return res.status(500).json({ message: "Internal Server Error" });
+    } catch (e: unknown) {
+        const message =
+            e instanceof Error ? e.message : typeof e === "string" ? e : JSON.stringify(e);
+
+        console.error("Error:", e);
+        return res.status(500).json({ message });
     }
 }
