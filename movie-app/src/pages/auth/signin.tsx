@@ -1,25 +1,28 @@
-import {signIn, getCsrfToken, getSession} from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-export default function SignIn({ csrfToken }: { csrfToken: string }) {
+export default function SignIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError("");
+
         const res = await signIn("credentials", {
             redirect: false,
             username,
             password,
+
         });
 
         if (res?.error) {
             setError("Invalid credentials");
-        } else {
-            window.location.href = "/profile"; // or router.push("/profile")
+            return;
         }
+
+        window.location.href = "/profile";
     };
 
     return (
@@ -38,6 +41,7 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        autoComplete="username"
                     />
                 </div>
 
@@ -50,6 +54,7 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        autoComplete="current-password"
                     />
                 </div>
 
@@ -60,4 +65,3 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
         </div>
     );
 }
-
