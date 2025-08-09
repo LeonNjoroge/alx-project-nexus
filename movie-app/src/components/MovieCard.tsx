@@ -2,6 +2,8 @@ import type { Movie } from "@/interfaces/interface";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function MovieCard({
                                       id,
@@ -10,27 +12,49 @@ export default function MovieCard({
                                       vote_average,
                                       release_date,
                                   }: Movie) {
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [added, setAdded] = useState(false);
+    const [removed, setRemoved] = useState(false);
 
-    const handleAddFavourite = async (e: React.MouseEvent) => {
-        e.preventDefault(); // prevent the Link from triggering
+    const isSavedPage = router.pathname === "/saved";
+    const isUnauthenticated = status === "unauthenticated" || !session;
+
+    const handleFavourite = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!session) return;
+
         setLoading(true);
         try {
-            const res = await fetch("/api/favourites", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ movieId: id }),
-            });
-
-            if (!res.ok) throw new Error("Failed to save favourite");
-            setAdded(true);
+            if (isSavedPage) {
+                // REMOVE from favourites
+                const res = await fetch("/api/favourites", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ movieId: id }),
+                });
+                if (!res.ok) throw new Error("Failed to remove favourite");
+                setRemoved(true); // hide from UI after deletion
+            } else {
+                // ADD to favourites
+                const res = await fetch("/api/favourites", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ movieId: id }),
+                });
+                if (!res.ok) throw new Error("Failed to save favourite");
+                setAdded(true);
+            }
         } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
         }
     };
+
+    // If removed from favourites, hide the card
+    if (removed) return null;
 
     return (
         <div className="flex flex-col w-[228px] min-w-[180px] max-w-[228px] text-[var(--app-fg)]">
@@ -69,17 +93,30 @@ export default function MovieCard({
             </Link>
 
             <button
-                onClick={handleAddFavourite}
-                disabled={loading || added}
+                onClick={handleFavourite}
+                disabled={loading || added || isUnauthenticated}
                 className={`mt-2 py-1 px-3 rounded text-sm font-medium ${
-                    added
-                        ? "bg-green-600 text-white"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                    isSavedPage
+                        ? "bg-red-600 text-white hover:bg-red-700"
+                        : added
+                            ? "bg-green-600 text-white"
+                            : isUnauthenticated
+                                ? "bg-gray-500 text-white cursor-not-allowed"
+                                : "bg-blue-600 text-white hover:bg-blue-700"
                 }`}
             >
-                {added ? "Added ✓" : loading ? "Adding..." : "Add to Favourites"}
+                {isUnauthenticated
+                    ? "Log in to favourite"
+                    : isSavedPage
+                        ? loading
+                            ? "Removing..."
+                            : "Remove from Favourites"
+                        : added
+                            ? "Added ✓"
+                            : loading
+                                ? "Adding..."
+                                : "Add to Favourites"}
             </button>
         </div>
     );
 }
-
