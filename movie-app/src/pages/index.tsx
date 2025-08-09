@@ -12,9 +12,19 @@ export default function Home() {
     const observerRef = useRef<HTMLDivElement | null>(null);
     const loadedPages = useRef<Set<number>>(new Set()); // prevent double fetches
 
+    const maxRequests = 15;
+    const requestCount = useRef(0);
+
     const loadMore = useCallback(async () => {
-        if (loading || !hasMore || loadedPages.current.has(page)) return;
+        if (
+            loading ||
+            !hasMore ||
+            loadedPages.current.has(page) ||
+            requestCount.current >= maxRequests
+        ) return;
+
         loadedPages.current.add(page);
+        requestCount.current += 1; // increment the request count
 
         setLoading(true);
         try {
@@ -26,7 +36,6 @@ export default function Home() {
                 return;
             }
 
-            // 🔑 merge uniquely by id
             setMovies(prev => {
                 const map = new Map<number, Movie>(prev.map(m => [m.id, m]));
                 for (const m of results) map.set(m.id, m);
