@@ -1,28 +1,41 @@
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import {signIn, useSession} from "next-auth/react";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
 
 export default function SignIn() {
+    const router = useRouter();
+    const { data: session } = useSession();
+    const callbackUrl =
+        (router.query.callbackUrl as string) || "/profile"; // default target
+
+    // If already logged in, go straight to target
+    useEffect(() => {
+        if (session) router.replace(callbackUrl);
+    }, [session, callbackUrl, router]);
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError("");
 
+        // Let NextAuth tell us where to go
         const res = await signIn("credentials", {
             redirect: false,
             username,
             password,
-
+            callbackUrl,
         });
 
-        if (res?.error) {
+        if (!res) return;
+        if (res.error) {
             setError("Invalid credentials");
             return;
         }
 
-        window.location.href = "/profile";
+        // On Vercel, prefer router.replace(res.url) instead of window.location
+        router.replace(res.url || callbackUrl);
     };
 
     return (

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 
 export default function SignUp() {
     const [username, setUsername] = useState("");

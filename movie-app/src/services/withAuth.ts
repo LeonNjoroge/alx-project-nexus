@@ -14,14 +14,19 @@ export function withAuth<T extends { session: Session | null }>(
 ) {
     const { redirectTo = "/auth/signin" } = options;
 
+
     return async (
         context: GetServerSidePropsContext
     ): Promise<GetServerSidePropsResult<T>> => {
         const session = await getSession(context);
 
         if (!session) {
+            const callback = encodeURIComponent(context.resolvedUrl || "/");
             return {
-                redirect: { destination: redirectTo, permanent: false },
+                redirect: {
+                    destination: `${redirectTo}?callbackUrl=${callback}`,
+                    permanent: false,
+                },
             };
         }
 
