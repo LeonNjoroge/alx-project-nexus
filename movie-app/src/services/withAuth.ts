@@ -1,10 +1,10 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 import type { Session } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 type WithAuthOptions = { redirectTo?: string };
 
-// T must include { session: Session | null }
 export function withAuth<T extends { session: Session | null }>(
     getProps?: (
         ctx: GetServerSidePropsContext,
@@ -14,11 +14,10 @@ export function withAuth<T extends { session: Session | null }>(
 ) {
     const { redirectTo = "/auth/signin" } = options;
 
-
     return async (
         context: GetServerSidePropsContext
     ): Promise<GetServerSidePropsResult<T>> => {
-        const session = await getSession(context);
+        const session = await getServerSession(context.req, context.res, authOptions);
 
         if (!session) {
             const callback = encodeURIComponent(context.resolvedUrl || "/");
@@ -30,15 +29,10 @@ export function withAuth<T extends { session: Session | null }>(
             };
         }
 
-
         const safeSession = JSON.parse(JSON.stringify(session)) as Session;
 
-        if (getProps) {
-            return getProps(context, safeSession);
-        }
+        if (getProps) return getProps(context, safeSession);
 
-        return {
-            props: { session: safeSession } as T,
-        };
+        return { props: { session: safeSession } as T };
     };
 }
