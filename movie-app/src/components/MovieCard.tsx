@@ -57,8 +57,8 @@ export default function MovieCard({
     if (removed) return null;
 
     return (
-        <div className="flex flex-col w-[228px] min-w-[180px] max-w-[228px] text-[var(--app-fg)]">
-            <Link
+        <div className="flex flex-col w-full sm:w-[180px] md:w-[200px] lg:w-[228px] text-[var(--app-fg)]">
+        <Link
                 href={`/movies/${id}`}
                 className="hover:opacity-90 transition flex flex-col flex-1"
             >
