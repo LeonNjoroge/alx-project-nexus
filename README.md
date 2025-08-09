@@ -33,7 +33,6 @@ The **ProDev Frontend Engineering** program focused on building production-ready
 - **JavaScript (ES6+)**: Functional programming and modern syntax.
 
 ### 4. **API Integration**
-- **GraphQL**: Query-based data fetching, Apollo Client usage.
 - **REST APIs**: Standard HTTP communication with backend services.
 
 ### 5. **State Management**
@@ -51,8 +50,7 @@ The **ProDev Frontend Engineering** program focused on building production-ready
 
 | Challenge | Solution |
 |----------|----------|
-| Adapting GraphQL to a dynamic frontend | Used codegen for typing and caching |
- API errors and data shaping | Wrote reusable Apollo error handlers and DTO mappers |
+ API errors and data shaping | Wrote reusable error handlers and DTO mappers |
 | Styling consistency across platforms | Adopted design tokens and Tailwind breakpoints |
 
 ---
@@ -71,7 +69,6 @@ The **ProDev Frontend Engineering** program focused on building production-ready
 
 - [Next.js Documentation](https://nextjs.org/)
 - [TailwindCSS Docs](https://tailwindcss.com/)
-- [Apollo GraphQL](https://www.apollographql.com/)
 
 
 ---
