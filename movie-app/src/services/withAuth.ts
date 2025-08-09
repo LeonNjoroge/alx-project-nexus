@@ -1,14 +1,14 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { getSession } from "next-auth/react";
+import type { Session } from "next-auth";
 
-type WithAuthOptions = {
-    redirectTo?: string;
-};
+type WithAuthOptions = { redirectTo?: string };
 
-export function withAuth<T>(
-    getServerSidePropsFunc?: (
-        context: GetServerSidePropsContext,
-        session: any
+// T must include { session: Session | null }
+export function withAuth<T extends { session: Session | null }>(
+    getProps?: (
+        ctx: GetServerSidePropsContext,
+        session: Session
     ) => Promise<GetServerSidePropsResult<T>>,
     options: WithAuthOptions = {}
 ) {
@@ -21,19 +21,19 @@ export function withAuth<T>(
 
         if (!session) {
             return {
-                redirect: {
-                    destination: redirectTo,
-                    permanent: false,
-                },
+                redirect: { destination: redirectTo, permanent: false },
             };
         }
 
-        if (getServerSidePropsFunc) {
-            return getServerSidePropsFunc(context, session);
+
+        const safeSession = JSON.parse(JSON.stringify(session)) as Session;
+
+        if (getProps) {
+            return getProps(context, safeSession);
         }
 
         return {
-            props: { session } as unknown as T,
+            props: { session: safeSession } as T,
         };
     };
 }
