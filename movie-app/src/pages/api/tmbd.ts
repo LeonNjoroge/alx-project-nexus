@@ -37,13 +37,11 @@ export async function fetchTopRatedMovies(page = 1) {
     return res.json();
 }
 
-export async function fetchFavouriteMovies(accountId: string) {
-    const endpoint = `${TMDB_CONFIG.BASE_URL}/account/${accountId}/favorite/movies?language=en-US&page=1`;
 
-    const res = await fetch(endpoint, {
-        headers: TMDB_CONFIG.HEADERS,
-    });
+export async function fetchFavouriteMovies(accountId: string, sessionId: string) {
+    const endpoint = `${TMDB_CONFIG.BASE_URL}/account/${accountId}/favorite/movies?language=en-US&page=1&session_id=${sessionId}`;
 
-    if (!res.ok) throw new Error('Failed to fetch favourite movies');
+    const res = await fetch(endpoint, { headers: TMDB_CONFIG.HEADERS });
+    if (!res.ok) throw new Error("Failed to fetch favourite movies");
     return res.json();
 }
