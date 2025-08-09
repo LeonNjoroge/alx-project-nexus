@@ -1,31 +1,14 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-import {getSession} from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export default function SignUp() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const router = useRouter();
 
-    // async function handleSubmit(e: React.FormEvent) {
-    //     e.preventDefault();
-    //
-    //     const res = await fetch("/api/auth/register", {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ username, password }),
-    //     });
-    //
-    //     if (res.ok) {
-    //         router.push("/auth/signin");
-    //     } else {
-    //         const { error } = await res.json();
-    //         setMessage(error || "Signup failed");
-    //     }
-    // }
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setMessage("");
 
         const res = await fetch("/api/auth/register", {
             method: "POST",
@@ -34,11 +17,19 @@ export default function SignUp() {
         });
 
         const data = await res.json();
+
         if (!res.ok) {
-            setMessage(data.message);
-        } else {
-            // router("/");
+            setMessage(data.message || "Registration failed");
+            return;
         }
+
+
+        const login = await signIn("credentials", {
+            redirect: true,
+            username,
+            password,
+            callbackUrl: "/profile",
+        });
     };
 
     return (
@@ -57,6 +48,7 @@ export default function SignUp() {
                         onChange={(e) => setUsername(e.target.value)}
                         className="block w-full text-black p-2 border rounded"
                         required
+                        autoComplete="username"
                     />
                 </div>
 
@@ -69,6 +61,7 @@ export default function SignUp() {
                         onChange={(e) => setPassword(e.target.value)}
                         className="block w-full text-black p-2 border rounded"
                         required
+                        autoComplete="new-password"
                     />
                 </div>
 
