@@ -8,14 +8,17 @@ interface Props {
     favouritesCount: number;
 }
 
-export const getServerSideProps = withAuth<Props>(async (ctx, session) => {
-    const base = process.env.NEXT_PUBLIC_APP_URL || `http://${ctx.req.headers.host}`;
-    const res = await fetch(`${base}/api/favourites?idsOnly=1`, {
-        headers: { cookie: ctx.req.headers.cookie || "" },
-    });
+import { supabaseAdmin } from "@/services/supabase/admin";
 
-    const ids: number[] = res.ok ? await res.json() : [];
-    return { props: { session, favouritesCount: ids.length } };
+export const getServerSideProps = withAuth<Props>(async (_ctx, session) => {
+    // Count directly in DB for this user
+    const { count, error } = await supabaseAdmin
+        .from("saved_movies")
+        .select("movie_id", { count: "exact", head: true })
+        .eq("user_id", session.user!.id);
+
+    const favouritesCount = error ? 0 : (count ?? 0);
+    return { props: { session, favouritesCount } };
 });
 
 export default function Profile({ session, favouritesCount }: Props) {
