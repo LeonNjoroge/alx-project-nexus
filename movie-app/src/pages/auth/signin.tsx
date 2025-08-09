@@ -17,10 +17,14 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+
+    const [loading, setLoading] = useState(false);
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        setError("");
 
-        // Let NextAuth tell us where to go
         const res = await signIn("credentials", {
             redirect: false,
             username,
@@ -28,13 +32,14 @@ export default function SignIn() {
             callbackUrl,
         });
 
+        setLoading(false);
+
         if (!res) return;
         if (res.error) {
             setError("Invalid credentials");
             return;
         }
 
-        // On Vercel, prefer router.replace(res.url) instead of window.location
         router.replace(res.url || callbackUrl);
     };
 
@@ -71,8 +76,12 @@ export default function SignIn() {
                     />
                 </div>
 
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
-                    Log In
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full py-2 rounded text-white ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600"}`}
+                >
+                    {loading ? "Logging in..." : "Log In"}
                 </button>
             </form>
         </div>

@@ -5,9 +5,12 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setMessage("");
+        setLoading(true);
 
         const res = await fetch("/api/auth/register", {
             method: "POST",
@@ -15,12 +18,16 @@ export default function SignUp() {
             body: JSON.stringify({ username, password }),
         });
 
+        setLoading(false);
+
         const data = await res.json();
 
         if (!res.ok) {
             setMessage(data.message || "Registration failed");
             return;
         }
+
+        setMessage("Account created successfully! You can now log in.");
     };
 
     return (
@@ -56,8 +63,14 @@ export default function SignUp() {
                     />
                 </div>
 
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
-                    Create Account
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full py-2 rounded text-white ${
+                        loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600"
+                    }`}
+                >
+                    {loading ? "Creating..." : "Create Account"}
                 </button>
             </form>
         </div>
