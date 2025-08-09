@@ -10,6 +10,9 @@ export default function App({
                             }: AppProps<{ session: Session | null }>) {
     return (
         <SessionProvider session={session}>
+            <head>
+                <title>Prescribed Movies</title>
+            </head>
             <Header />
             <main className="min-h-screen bg-[var(--app-bg)] text-[var(--app-fg)] p-10">
                 <Component {...pageProps} />
