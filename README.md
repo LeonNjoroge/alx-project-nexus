@@ -1,84 +1,108 @@
-# ALX Project Nexus – ProDev Frontend Engineering
+# 🎬 Prescribed Movies – Movie & TV Show Browser  
 
-## Overview
+## Overview  
 
-**Project Nexus** is a comprehensive documentation hub showcasing major learnings and milestones from the **ProDev Frontend Engineering** program. This repository consolidates key frontend technologies, tools, real-world challenges, solutions, and best practices experienced throughout the program.
+**Prescribed Movies** is a modern web application for browsing, searching, and saving movies and TV shows using data from the [TMDB API](https://www.themoviedb.org/documentation/api).  
+It features infinite scrolling, user authentication, and the ability to manage a favourites list.  
 
-The purpose of this repository is to:
-- Serve as a reference guide for current and future learners.
-- Promote collaboration with backend learners.
-- Demonstrate a deep understanding of frontend engineering principles.
+The app is part of the **ALX Project Nexus – ProDev Frontend Engineering** journey, showcasing practical application of **Next.js**, **TypeScript**, and UI best practices in a real-world project.  
 
 ---
 
-## 💻 Program Overview
+## ✨ Features  
 
-The **ProDev Frontend Engineering** program focused on building production-ready frontend applications using modern technologies. It involved hands-on work, collaboration with backend teams, and real-world project scenarios.
-
----
-
-## 🚀 Key Technologies and Concepts
-
-### 1. **Web & Mobile Development**
-- **Next.js**: Server-side rendering, routing, and API integration.
-- **React Native & Expo**: Mobile-first development with native components.
-- **Progressive Web Apps (PWA)**: Offline support, installable experiences.
-
-### 2. **Styling and UI**
-- **TailwindCSS**: Utility-first CSS for fast and consistent design.
-- **Material UI / ShadCN**: Ready-made components with customisation.
-
-### 3. **Programming Languages**
-- **TypeScript**: Static typing for safer, scalable JavaScript.
-- **JavaScript (ES6+)**: Functional programming and modern syntax.
-
-### 4. **API Integration**
-- **REST APIs**: Standard HTTP communication with backend services.
-
-### 5. **State Management**
-- **Redux Toolkit**: Efficient global state handling.
-- **React Context**: Light-weight state sharing.
-
-### 6. **System Design**
-- Component modularity and scalability.
-- Directory and architecture best practices.
-- CI/CD with GitHub Actions and Expo EAS.
+- 🔍 **Search** for movies and TV shows.  
+- 🖼 **View details** including posters, ratings, genres, and recommendations.  
+- 📜 **Infinite scrolling** for browsing large lists.  
+- ❤️ **Favourite management** – add or remove movies and shows from your saved list.  
+- 🔐 **User authentication** (Login, Logout).  
+- 📱 **Responsive design** – works seamlessly on desktop and mobile.  
 
 ---
 
-## ⚠️ Challenges Faced
+## 🛠 Tech Stack  
+
+### Frontend  
+- **Next.js** – Server-side rendering, routing, and API calls.  
+- **TypeScript** – Strict typing for maintainability.  
+- **TailwindCSS** – Utility-first styling.  
+
+### APIs  
+- **TMDB API** – Fetch movies, TV shows, and details.  
+
+### State & Data Management  
+- **React Hooks** – State and lifecycle management.  
+- **Intersection Observer API** – Infinite scroll implementation.  
+
+---
+
+## 🚀 Getting Started  
+
+### Prerequisites  
+- Node.js 18+  
+- TMDB API Read Access Token  
+
+### Installation  
+
+```bash
+# Clone the repository
+git clone https://github.com/LeonNjoroge/alx-project-nexus.git
+
+# Navigate into the project folder
+cd alx-project-nexus
+
+# Install dependencies
+npm install
+
+# Create a .env.local file and add:
+NEXT_PUBLIC_BASE_URL=https://api.themoviedb.org/3
+NEXT_PUBLIC_TMDB_READ_TOKEN=your_tmdb_token
+
+# Run the development server
+npm run dev
+```
+
+---
+
+## 📂 Project Structure  
+
+```
+src/
+ ├─ components/      # Reusable UI components
+ ├─ pages/           # Next.js pages (Home, Search, Saved, Profile, etc.)
+ ├─ pages/api/       # TMDB API fetch functions
+ ├─ interfaces/      # TypeScript interfaces
+ ├─ styles/          # Global styles & Tailwind config
+```
+
+---
+
+## ⚠️ Challenges & Solutions  
 
 | Challenge | Solution |
-|----------|----------|
- API errors and data shaping | Wrote reusable error handlers and DTO mappers |
-| Styling consistency across platforms | Adopted design tokens and Tailwind breakpoints |
+|-----------|----------|
+| Infinite scroll stopped after toggling between Movies and TV | Reset pagination state and observer when toggling content type |
+| Styling consistency across pages | Adopted Tailwind design tokens & reusable card components |
+| TMDB API rate limits | Added request throttling and caching for popular endpoints |
 
 ---
 
-## ✅ Best Practices & Takeaways
+## ✅ Best Practices Applied  
 
-- **Code Reusability**: Built shared components and hooks.
-- **Collaboration**: Paired with backend learners to align contracts.
-- **Testing**: Used Jest, Playwright, and Cypress for confidence.
-- **Accessibility**: Added keyboard support and ARIA attributes.
-- **Documentation**: Wrote JSDoc and integrated Storybook for UI docs.
-
----
-
-## 📚 Resources
-
-- [Next.js Documentation](https://nextjs.org/)
-- [TailwindCSS Docs](https://tailwindcss.com/)
-
+- Built reusable **MovieCard** and **SearchBar** components.  
+- Managed API pagination state for infinite scroll.  
+- Used environment variables for API keys.  
+- Applied responsive design patterns for all devices.  
+- Implemented conditional rendering for login state.  
 
 ---
 
-## 📌 Repository Info
+## 📌 Repository Info  
 
-- **Repo Name**: `alx-project-nexus`
-- **License**: MIT
-- **Maintainer**: [Leon Njoroge](https://github.com/LeonNjoroge)
+- **Repo Name**: `alx-project-nexus`  
+- **License**: MIT  
+- **Maintainer**: [Leon Njoroge](https://github.com/LeonNjoroge)  
 
 ---
 
-© 2025 ALX – All rights reserved.
+© 2025 ALX – All rights reserved.  
